@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: flex-analytics
+
+app:
+  input-file: analytics.csv
+  output-file: analytics_output.csv
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: logs/flex-analytics.log
