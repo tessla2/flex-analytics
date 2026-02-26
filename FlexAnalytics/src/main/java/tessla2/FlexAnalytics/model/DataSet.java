@@ -27,5 +27,8 @@ public record DataSet(String[] headers, List<double[]> inputs, double[] output, 
     public String getOutputHeader() {
         return headers[numVars];
     }
+    public int getNumVars() {
+        return numVars;
+    }
 
 }

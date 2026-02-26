@@ -1,13 +1,20 @@
 spring:
   application:
     name: flex-analytics
+  security:
+    user:
+      name: ${ADMIN_USER}
+      password: ${ADMIN_PASSWORD}
+server:
+  port: 8081
 
 app:
-  input-file: analytics.csv
-  output-file: analytics_output.csv
+  input-file: ${INPUT_FILE}
+  output-file: ${OUTPUT_FILE}
+  max-file-size: 10MB
 
 logging:
   level:
     root: INFO
   file:
-    name: logs/flex-analytics.log
+    name: ${LOG_FILE}

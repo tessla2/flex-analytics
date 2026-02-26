@@ -1,10 +1,158 @@
-2026-02-25T17:31:55.883Z  INFO 22128 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 22128 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
-2026-02-25T17:31:55.891Z  INFO 22128 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
-2026-02-25T17:31:58.335Z  INFO 22128 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
-2026-02-25T17:31:58.369Z  INFO 22128 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-25T17:31:58.373Z  INFO 22128 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
-2026-02-25T17:31:58.513Z  INFO 22128 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2495 ms
-2026-02-25T17:31:59.446Z  INFO 22128 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
-2026-02-25T17:31:59.461Z  INFO 22128 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Started Application in 4.697 seconds (process running for 5.67)
-2026-02-25T17:33:32.426Z  INFO 22128 --- [flex-analytics] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
-2026-02-25T17:33:32.624Z  INFO 22128 --- [flex-analytics] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-02-26T09:41:39.135Z  INFO 26984 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 26984 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T09:41:39.161Z  INFO 26984 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T09:41:42.782Z  INFO 26984 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T09:41:42.818Z  INFO 26984 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T09:41:42.819Z  INFO 26984 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T09:41:42.934Z  INFO 26984 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 3616 ms
+2026-02-26T09:41:43.755Z  INFO 26984 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-02-26T09:41:43.768Z  INFO 26984 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Started Application in 6.47 seconds (process running for 7.833)
+2026-02-26T12:14:59.103Z  INFO 26984 --- [flex-analytics] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-26T12:14:59.137Z  INFO 26984 --- [flex-analytics] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-02-26T12:15:04.119Z  INFO 24388 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 24388 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T12:15:04.123Z  INFO 24388 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T12:15:05.283Z  INFO 24388 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T12:15:05.304Z  INFO 24388 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T12:15:05.304Z  INFO 24388 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T12:15:05.367Z  INFO 24388 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1175 ms
+2026-02-26T12:15:05.790Z  INFO 24388 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-02-26T12:15:05.798Z  INFO 24388 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Started Application in 2.338 seconds (process running for 2.924)
+2026-02-26T12:15:31.247Z  INFO 24388 --- [flex-analytics] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-26T12:15:31.257Z  INFO 24388 --- [flex-analytics] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-02-26T12:18:03.203Z  INFO 22116 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 22116 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T12:18:03.210Z  INFO 22116 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T12:18:04.669Z  INFO 22116 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T12:18:04.692Z  INFO 22116 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T12:18:04.693Z  INFO 22116 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T12:18:04.773Z  INFO 22116 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1466 ms
+2026-02-26T12:18:05.347Z  INFO 22116 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-02-26T12:18:05.357Z  INFO 22116 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Started Application in 3.188 seconds (process running for 4.106)
+2026-02-26T13:11:29.095Z  INFO 25380 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 25380 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T13:11:29.100Z  INFO 25380 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T13:11:30.577Z  INFO 25380 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T13:11:30.600Z  INFO 25380 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T13:11:30.600Z  INFO 25380 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T13:11:30.682Z  INFO 25380 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1508 ms
+2026-02-26T13:11:31.257Z  WARN 25380 --- [flex-analytics] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-26T13:11:31.268Z  INFO 25380 --- [flex-analytics] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-26T13:11:31.287Z ERROR 25380 --- [flex-analytics] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-02-26T13:11:49.411Z  INFO 10716 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 10716 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T13:11:49.417Z  INFO 10716 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T13:11:51.036Z  INFO 10716 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T13:11:51.064Z  INFO 10716 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T13:11:51.065Z  INFO 10716 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T13:11:51.154Z  INFO 10716 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1592 ms
+2026-02-26T13:11:51.961Z  WARN 10716 --- [flex-analytics] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-26T13:11:51.985Z  INFO 10716 --- [flex-analytics] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-26T13:11:52.024Z ERROR 10716 --- [flex-analytics] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-02-26T13:12:37.967Z  INFO 23256 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 23256 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T13:12:37.980Z  INFO 23256 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T13:12:39.537Z  INFO 23256 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T13:12:39.556Z  INFO 23256 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T13:12:39.557Z  INFO 23256 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T13:12:39.622Z  INFO 23256 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1542 ms
+2026-02-26T13:12:40.157Z  WARN 23256 --- [flex-analytics] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-26T13:12:40.172Z  INFO 23256 --- [flex-analytics] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-26T13:12:40.195Z ERROR 23256 --- [flex-analytics] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-02-26T13:12:59.246Z  INFO 23444 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 23444 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T13:12:59.254Z  INFO 23444 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T13:13:00.729Z  INFO 23444 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T13:13:00.755Z  INFO 23444 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T13:13:00.756Z  INFO 23444 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T13:13:00.826Z  INFO 23444 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1479 ms
+2026-02-26T13:13:01.345Z  WARN 23444 --- [flex-analytics] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-26T13:13:01.364Z  INFO 23444 --- [flex-analytics] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-26T13:13:01.394Z ERROR 23444 --- [flex-analytics] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-02-26T13:18:43.427Z  INFO 14540 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 14540 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T13:18:43.439Z  INFO 14540 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T13:18:44.484Z  INFO 14540 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-26T13:18:44.505Z  INFO 14540 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T13:18:44.507Z  INFO 14540 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T13:18:44.548Z  INFO 14540 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1034 ms
+2026-02-26T13:18:44.927Z  WARN 14540 --- [flex-analytics] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-26T13:18:44.935Z  INFO 14540 --- [flex-analytics] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-26T13:18:44.943Z ERROR 14540 --- [flex-analytics] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-02-26T13:25:06.482Z  INFO 22208 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Starting Application using Java 21.0.6 with PID 22208 (C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics\FlexAnalytics\target\classes started by tainara.santos in C:\Users\tainara.santos\Documents\Folders\OneDrive - LUZA Group\Desktop\FlexAnalytics)
+2026-02-26T13:25:06.488Z  INFO 22208 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-26T13:25:07.991Z  INFO 22208 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8081 (http)
+2026-02-26T13:25:08.007Z  INFO 22208 --- [flex-analytics] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-26T13:25:08.007Z  INFO 22208 --- [flex-analytics] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-02-26T13:25:08.061Z  INFO 22208 --- [flex-analytics] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1500 ms
+2026-02-26T13:25:08.665Z  INFO 22208 --- [flex-analytics] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8081 (http) with context path '/'
+2026-02-26T13:25:08.678Z  INFO 22208 --- [flex-analytics] [main] tessla2.FlexAnalytics.Application        : Started Application in 2.947 seconds (process running for 3.503)
+2026-02-26T14:42:26.730Z  INFO 22208 --- [flex-analytics] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-26T14:42:26.747Z  INFO 22208 --- [flex-analytics] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
