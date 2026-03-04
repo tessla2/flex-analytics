@@ -1,12 +1,22 @@
 package tessla2.FlexAnalytics.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.List;
 
-public record DataSet(String[] headers, List<double[]> inputs, double[] output, int numVars) {
-    // Extrai uma coluna inteira de uma variavel de entrada
+
+@Data
+@AllArgsConstructor
+public class DataSet {
+    private final String[] headers;
+    private final int numVars;
+    private final List<double[]> inputs;
+    private final double[] output;
+
+
+
+    // Extracts an entire column from an entry variable
     public double[] extractColumn(int index) {
         if (index < 0 || index >= numVars)
             throw new IndexOutOfBoundsException("Column index out of bounds"); // IndexOutOfBoundsException para evitar acesso a colunas inexistentes
@@ -18,17 +28,15 @@ public record DataSet(String[] headers, List<double[]> inputs, double[] output, 
         return col;
     }
 
-    // Retorna o número de linhas do dataset
+    // Returns DataSet line numbers
     public int getRowCount() {
         return inputs.size();
     }
 
-    // Retorna o número de variáveis de saída
+    // Returns output variables
     public String getOutputHeader() {
         return headers[numVars];
     }
-    public int getNumVars() {
-        return numVars;
-    }
+
 
 }

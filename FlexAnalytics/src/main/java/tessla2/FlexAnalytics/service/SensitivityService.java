@@ -12,8 +12,6 @@ import java.util.List;
 @Service
 public class SensitivityService {
 
-
-    // Pearson para medir a correlação entre cada variável de entrada e a saída
     // Parte de apache commons math
     private final PearsonsCorrelation pearson = new PearsonsCorrelation();
 
@@ -21,14 +19,14 @@ public class SensitivityService {
         List<SensitivityResult> results = new ArrayList<>();
 
 
-        // Para cada variável de entrada, calcula a correlação com a saída e armazena o resultado
-        for (int v = 0; v < dataSet.numVars(); v++) {
+        // For each input variable, calculate the correlation with the output and store the result.
+        for (int v = 0; v < dataSet.getNumVars(); v++) {
             double[] col = dataSet.extractColumn(v);
-            double correlation = pearson.correlation(col, dataSet.output()); // Calcula a correlação entre a variável de entrada e a saída
-            results.add(new SensitivityResult(dataSet.headers()[v], correlation));
+            double correlation = pearson.correlation(col, dataSet.getOutput()); // Calcula a correlação entre a variável de entrada e a saída
+            results.add(new SensitivityResult(dataSet.getHeaders()[v], correlation));
         }
 
-        results.sort(Comparator.comparingDouble(SensitivityResult::getAbsoluteImpact));
+        results.sort(Comparator.comparingDouble(SensitivityResult::getAbsoluteImpact).reversed());
         return results;
     }
 }

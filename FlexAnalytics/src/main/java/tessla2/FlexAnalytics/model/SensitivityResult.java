@@ -1,21 +1,17 @@
 package tessla2.FlexAnalytics.model;
 
 
-import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Entity
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 public class SensitivityResult {
-    private final String variable;
-    private final double correlation;
 
-    public SensitivityResult(String variable, double correlation) {
-        this.variable = variable;
-        this.correlation = correlation;
+    private String variable;
+    private double correlation;
+
+    public double getAbsoluteImpact() {
+        return Math.abs(correlation);
     }
-    public double getAbsoluteImpact()
-    {return Math.abs(correlation);}
 }
