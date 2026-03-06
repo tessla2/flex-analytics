@@ -19,7 +19,7 @@ public class CsvExportService {
 
         List<String[]> rows;
 
-        // suporta tanto classpath quanto caminho absoluto
+        // supports classpath and absolute
         try (InputStream is = resolveInputStream(inputFile);
              CSVReader reader = new CSVReader(new InputStreamReader(is))) {
             rows = reader.readAll();
@@ -28,24 +28,24 @@ public class CsvExportService {
         if (rows == null || rows.isEmpty())
             throw new IllegalArgumentException("CSV de entrada vazio.");
 
-        // monta mapa de correlação
+        // builds correlation map
         Map<String, Double> correlationMap = new LinkedHashMap<>();
         for (SensitivityResult r : results) {
             correlationMap.put(r.getVariable(), r.getCorrelation());
         }
 
-        // variável de maior impacto
+        // strongest impact variable
         String topVariable    = results.get(0).getVariable();
         double topCorrelation = results.get(0).getCorrelation();
 
-        // adiciona colunas no header
+        // add columns on header
         String[] originalHeader = rows.get(0);
         String[] newHeader = Arrays.copyOf(originalHeader, originalHeader.length + 2);
         newHeader[originalHeader.length]     = "variavel_maior_impacto";
         newHeader[originalHeader.length + 1] = "correlacao";
         rows.set(0, newHeader);
 
-        // adiciona valores nas linhas
+        // add value on lines
         for (int i = 1; i < rows.size(); i++) {
             String[] row = rows.get(i);
             String[] newRow = Arrays.copyOf(row, row.length + 2);
@@ -54,7 +54,7 @@ public class CsvExportService {
             rows.set(i, newRow);
         }
         File outFile = new File(outputFile);
-        // escreve output
+        // output
         if (outFile.getParentFile() != null) {
             outFile.getParentFile().mkdirs();
         }
@@ -67,17 +67,17 @@ public class CsvExportService {
     private InputStream resolveInputStream(String path) throws IOException {
         File file = new File(path);
 
-        // caminho absoluto — arquivo real no sistema
+        // absolute path — real file on system
         if (file.isAbsolute() && file.exists()) {
             return new FileInputStream(file);
         }
 
-        // classpath — recurso interno do projeto
+        // classpath
         Resource resource = new ClassPathResource(
                 path.replace("classpath:", "").trim());
 
         if (!resource.exists())
-            throw new FileNotFoundException("Arquivo não encontrado: " + path);
+            throw new FileNotFoundException("File Not Found: " + path);
 
         return resource.getInputStream();
     }

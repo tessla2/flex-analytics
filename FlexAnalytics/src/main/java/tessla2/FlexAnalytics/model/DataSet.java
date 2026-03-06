@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -13,8 +14,11 @@ public class DataSet {
     private final int numVars;
     private final List<double[]> inputs;
     private final double[] output;
+    private final Set<Integer> categoricalIndices;
 
-
+    public DataSet(String[] headers, int numVars, List<double[]> inputs, double[] output) {
+        this(headers, numVars, inputs, output, Set.of());
+    }
 
     // Extracts an entire column from an entry variable
     public double[] extractColumn(int index) {
@@ -26,6 +30,10 @@ public class DataSet {
             col[i] = inputs.get(i)[index];
         }
         return col;
+    }
+
+    public boolean isCategorical(int index) {
+        return categoricalIndices.contains(index);
     }
 
     // Returns DataSet line numbers

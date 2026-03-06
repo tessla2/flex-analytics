@@ -10,6 +10,7 @@ public class SensitivityResult {
 
     private String variable;
     private double correlation;
+    private String analysisType;
 
     public double getAbsoluteImpact() {
         return Math.abs(correlation);

@@ -20,36 +20,43 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OperationNotAllowed.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleOperationNotAllowed(OperationNotAllowed e){
-        return ErrorResponse.standardError("Error in component validation: " + e.getMessage());
+    public ErrorResponse handleOperationNotAllowed(OperationNotAllowed e) {
+        log.warn("Operation not allowed: {}", e.getMessage());
+        return ErrorResponse.standardError("Operation not allowed: " + e.getMessage());
     }
 
     @ExceptionHandler(FileNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)  // era CONFLICT, troca para NOT_FOUND
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleFileNotFound(FileNotFoundException e) {
+        log.warn("File not found: {}", e.getMessage());
         return ErrorResponse.standardError("File not found: " + e.getMessage());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgument(IllegalArgumentException e) {
+        log.warn("Invalid request: {}", e.getMessage());
+        return ErrorResponse.standardError(e.getMessage());
+    }
+
     @ExceptionHandler(FileProcessingException.class)
-    public ResponseEntity<ErrorResponse> handleFileProcessing(FileProcessingException ex) {
-
-        ErrorResponse error = new ErrorResponse(
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFileProcessing(FileProcessingException e) {
+        log.error("File processing error: {}", e.getMessage());
+        return new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
+                e.getMessage()
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(error);
+        );
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleGenericException(Exception e){
+    public ErrorResponse handleGenericException(Exception e) {
+        log.error("Unexpected error: {}", e.getMessage(), e);
         return new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "An unexpected error occurred: " + e.getMessage(),
-                LocalDateTime.now()
+                "An unexpected error occurred."
         );
     }
 }
