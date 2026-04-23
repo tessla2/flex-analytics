@@ -1,32 +1,36 @@
 package tessla2.FlexAnalytics.runner;
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import tessla2.FlexAnalytics.model.DataSet;
-import tessla2.FlexAnalytics.model.SensitivityResult;
-import tessla2.FlexAnalytics.service.CsvExportService;
-import tessla2.FlexAnalytics.service.CsvReaderService;
-import tessla2.FlexAnalytics.service.SensitivityService;
+import tessla2.FlexAnalytics.domain.model.DataSet;
+import tessla2.FlexAnalytics.domain.model.SensitivityResult;
+import tessla2.FlexAnalytics.domain.service.CsvExportService;
+import tessla2.FlexAnalytics.domain.service.CsvReaderService;
+import tessla2.FlexAnalytics.domain.service.SensitivityService;
 
 import java.util.List;
 
 @Component
 public class ConsoleRunner implements CommandLineRunner {
 
+    private final CsvReaderService csvReaderService;
+    private final SensitivityService sensitivityService;
+    private final CsvExportService csvExportService;
 
-    @Autowired private CsvReaderService csvReaderService;
-    @Autowired private SensitivityService sensitivityService;
-    @Autowired private CsvExportService csvExportService;
+    @Value("${app.input-file}")
+    private String inputFile;
 
-        @Value("${app.input-file}")
-        private String inputFile;
+    @Value("${app.output-file}")
+    private String outputFile;
 
-        @Value("${app.output-file}")
-        private String outputFile;
+    public ConsoleRunner(CsvReaderService csvReaderService,
+                         SensitivityService sensitivityService,
+                         CsvExportService csvExportService) {
+        this.csvReaderService = csvReaderService;
+        this.sensitivityService = sensitivityService;
+        this.csvExportService = csvExportService;
+    }
 
     @Override
     public void run(String... args) throws Exception {
