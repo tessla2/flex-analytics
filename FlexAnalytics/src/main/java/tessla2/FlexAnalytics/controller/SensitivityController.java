@@ -15,6 +15,7 @@ import tessla2.FlexAnalytics.application.mapper.SensitivityMapper;
 import tessla2.FlexAnalytics.domain.model.DataSet;
 import tessla2.FlexAnalytics.domain.model.ScenarioSummary;
 import tessla2.FlexAnalytics.domain.model.SensitivityResult;
+import tessla2.FlexAnalytics.domain.model.CorrelationMethod;
 import tessla2.FlexAnalytics.domain.service.CsvExportService;
 import tessla2.FlexAnalytics.domain.service.CsvReaderService;
 import tessla2.FlexAnalytics.domain.service.ExperimenterMergeService;
@@ -40,6 +41,9 @@ public class SensitivityController {
     @Value("${app.output-file:./output/result.csv}")
     private String defaultOutput;
 
+    @Value("${app.correlation-method:PEARSON}")
+    private String defaultCorrelationMethod;
+
     @Value("${app.merged-output-file:./output/merged_scenarios.csv}")
     private String defaultMergedOutput;
 
@@ -60,18 +64,21 @@ public class SensitivityController {
     @PostMapping("/analyze")
     public AnalysisResponse analyze(
             @RequestParam(required = false) String inputFile,
-            @RequestParam(required = false) String outputFile
+            @RequestParam(required = false) String outputFile,
+            @RequestParam(required = false) String correlationMethod
     ) throws IOException, CsvException {
 
         String resolvedInput = inputFile == null || inputFile.isBlank() ? defaultInput : inputFile;
         String resolvedOutput = outputFile == null || outputFile.isBlank() ? defaultOutput : outputFile;
+        CorrelationMethod resolvedMethod = CorrelationMethod.from(correlationMethod, CorrelationMethod.from(defaultCorrelationMethod, CorrelationMethod.PEARSON));
 
         DataSet dataSet = csvReaderService.load(resolvedInput);
-        List<SensitivityResult> results = sensitivityService.analyze(dataSet);
+        List<SensitivityResult> results = sensitivityService.analyze(dataSet, resolvedMethod);
         csvExportService.export(resolvedInput, resolvedOutput, results);
 
         List<ResultDTO> resultDTOS = results.stream().map(sensitivityMapper::toDto).toList();
-        return new AnalysisResponse(resolvedInput, resolvedOutput, dataSet.getRowCount(), dataSet.getNumVars(), resultDTOS);
+        return new AnalysisResponse(resolvedInput, resolvedOutput, dataSet.getRowCount(), dataSet.getNumVars(),
+                resolvedMethod.name(), resultDTOS);
     }
 
     @PostMapping("/merge-experimenter")
