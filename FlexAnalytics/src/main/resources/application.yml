@@ -9,6 +9,8 @@ server:
   port: 8081
 
 app:
+  cli:
+    enabled: ${CLI_ENABLED:false}
   input-file: ${INPUT_FILE}
   output-file: ${OUTPUT_FILE}
   correlation-method: ${CORRELATION_METHOD:PEARSON}

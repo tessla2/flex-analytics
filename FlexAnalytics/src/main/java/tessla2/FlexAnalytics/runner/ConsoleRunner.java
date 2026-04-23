@@ -1,6 +1,7 @@
 package tessla2.FlexAnalytics.runner;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import tessla2.FlexAnalytics.domain.model.DataSet;
@@ -12,6 +13,7 @@ import tessla2.FlexAnalytics.domain.service.SensitivityService;
 import java.util.List;
 
 @Component
+@ConditionalOnProperty(name = "app.cli.enabled", havingValue = "true")
 public class ConsoleRunner implements CommandLineRunner {
 
     private final CsvReaderService csvReaderService;
