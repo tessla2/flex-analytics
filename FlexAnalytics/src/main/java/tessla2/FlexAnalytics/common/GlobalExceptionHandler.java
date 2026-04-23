@@ -13,7 +13,7 @@ import java.time.Instant;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class, CsvException.class})
+    @ExceptionHandler({IllegalArgumentException.class, CsvException.class, NumberFormatException.class})
     public ResponseEntity<ErrorResponse> handleBadRequest(Exception ex) {
         ErrorResponse response = new ErrorResponse(ex.getMessage(), "Invalid input data", Instant.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

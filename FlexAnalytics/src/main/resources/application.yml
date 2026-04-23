@@ -11,6 +11,7 @@ server:
 app:
   input-file: ${INPUT_FILE}
   output-file: ${OUTPUT_FILE}
+  correlation-method: ${CORRELATION_METHOD:PEARSON}
   max-file-size: 10MB
 
 logging:
