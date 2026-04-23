@@ -1,0 +1,11 @@
+ScenarioID,RepNum,Object,Throughput
+1,1,Saida Linha A,29
+1,1,Saida Linha B,7
+1,2,Saida Linha A,29
+1,2,Saida Linha B,7
+2,1,Saida Linha A,15
+2,1,Saida Linha B,7
+2,2,Saida Linha A,16
+2,2,Saida Linha B,7
+3,1,Saida Linha A,12
+3,1,Saida Linha B,6
