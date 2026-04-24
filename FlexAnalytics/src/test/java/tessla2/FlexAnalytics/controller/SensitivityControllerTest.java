@@ -3,8 +3,8 @@ package tessla2.FlexAnalytics.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.mock.web.MockMultipartFile;
 import tessla2.FlexAnalytics.application.dto.ResultDTO;
@@ -38,17 +38,17 @@ class SensitivityControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private CsvReaderService csvReaderService;
-    @MockBean
+    @MockitoBean
     private SensitivityService sensitivityService;
-    @MockBean
+    @MockitoBean
     private CsvExportService csvExportService;
-    @MockBean
+    @MockitoBean
     private SensitivityMapper sensitivityMapper;
-    @MockBean
+    @MockitoBean
     private ExperimenterMergeService experimenterMergeService;
-    @MockBean
+    @MockitoBean
     private ScenarioSummaryMapper scenarioSummaryMapper;
 
     @Test
