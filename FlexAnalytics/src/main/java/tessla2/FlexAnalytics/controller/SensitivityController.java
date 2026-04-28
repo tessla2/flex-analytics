@@ -19,6 +19,7 @@ import tessla2.FlexAnalytics.domain.model.SensitivityResult;
 import tessla2.FlexAnalytics.domain.model.CorrelationMethod;
 import tessla2.FlexAnalytics.domain.service.CsvExportService;
 import tessla2.FlexAnalytics.domain.service.CsvReaderService;
+import tessla2.FlexAnalytics.domain.service.ExperimenterDataService;
 import tessla2.FlexAnalytics.domain.service.ExperimenterMergeService;
 import tessla2.FlexAnalytics.domain.service.SensitivityService;
 
@@ -27,6 +28,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import tessla2.FlexAnalytics.application.dto.AnalysisResponse;
 
 @RestController
 @RequestMapping("/api/v1/sensitivity")
@@ -37,6 +41,7 @@ public class SensitivityController {
     private final CsvExportService csvExportService;
     private final SensitivityMapper sensitivityMapper;
     private final ExperimenterMergeService experimenterMergeService;
+    private final ExperimenterDataService experimenterDataService;
     private final ScenarioSummaryMapper scenarioSummaryMapper;
 
     @Value("${app.input-file:classpath:analytics.csv}")
@@ -59,12 +64,14 @@ public class SensitivityController {
                                  CsvExportService csvExportService,
                                  SensitivityMapper sensitivityMapper,
                                  ExperimenterMergeService experimenterMergeService,
+                                 ExperimenterDataService experimenterDataService,
                                  ScenarioSummaryMapper scenarioSummaryMapper) {
         this.csvReaderService = csvReaderService;
         this.sensitivityService = sensitivityService;
         this.csvExportService = csvExportService;
         this.sensitivityMapper = sensitivityMapper;
         this.experimenterMergeService = experimenterMergeService;
+        this.experimenterDataService = experimenterDataService;
         this.scenarioSummaryMapper = scenarioSummaryMapper;
     }
 
@@ -155,6 +162,135 @@ public class SensitivityController {
                     // best effort cleanup
                 }
             }
+        }
+    }
+
+    @PostMapping("/load-raw")
+    public List<String[]> loadRaw(
+            @RequestParam String filePath
+    ) throws IOException, CsvException {
+        return csvReaderService.loadRaw(filePath);
+    }
+
+    @PostMapping("/headers")
+    public String[] getHeaders(
+            @RequestParam String filePath
+    ) throws IOException, CsvException {
+        return csvReaderService.getHeaders(filePath);
+    }
+
+    @PostMapping("/merge-flexsim")
+    public Map<String, Map<String, Double>> mergeFlexsim(
+            @RequestParam List<String> filePaths,
+            @RequestParam List<String> keyColumns,
+            @RequestParam(required = false) String separator,
+            @RequestParam(required = false) Boolean convertDecimals
+    ) throws IOException, CsvException {
+        if (keyColumns == null || keyColumns.isEmpty()) {
+            keyColumns = List.of("ScenarioID");
+        }
+
+        Map<String, List<Map<String, Object>>> raw = experimenterDataService.loadAndMerge(
+                filePaths, keyColumns, "value");
+        return experimenterDataService.aggregateByKeys(raw);
+    }
+
+    @PostMapping("/analyze-flexsim")
+    public AnalysisResponse analyzeFlexsim(
+            @RequestParam List<String> filePaths,
+            @RequestParam(defaultValue = "ScenarioID") String scenarioColumn,
+            @RequestParam List<String> inputColumns,
+            @RequestParam List<String> outputColumns,
+            @RequestParam(required = false) String correlationMethod,
+            @RequestParam(required = false) String outputFile
+    ) throws IOException, CsvException {
+
+        CorrelationMethod method = CorrelationMethod.from(correlationMethod, CorrelationMethod.PEARSON);
+        String resolvedOutput = outputFile == null || outputFile.isBlank() ? defaultOutput : outputFile;
+
+        Map<String, List<Map<String, Object>>> raw = experimenterDataService.loadAndMerge(
+                filePaths,
+                List.of(scenarioColumn),
+                outputColumns.get(0)
+        );
+
+        Map<String, Map<String, Double>> aggregated = experimenterDataService.aggregateByKeys(raw);
+
+        DataSet dataSet = experimenterDataService.prepareForSensitivity(
+                aggregated,
+                inputColumns,
+                outputColumns
+        );
+
+        List<SensitivityResult> results = sensitivityService.analyze(dataSet, method);
+        csvExportService.export("merged", resolvedOutput, results);
+
+        List<ResultDTO> resultDTOS = results.stream().map(sensitivityMapper::toDto).toList();
+        return new AnalysisResponse("merged", resolvedOutput, dataSet.getRowCount(), dataSet.getNumVars(),
+                method.name(), resultDTOS);
+    }
+
+    @PostMapping("/merge-flexsim/upload")
+    public Map<String, Map<String, Double>> mergeFlexsimUpload(
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam(defaultValue = "ScenarioID") String keyColumn,
+            @RequestParam(required = false) String separator,
+            @RequestParam(required = false) Boolean convertDecimals,
+            @RequestParam(defaultValue = "./output/merged_result.csv") String outputFile
+    ) throws IOException, CsvException {
+
+        List<Path> tempFiles = new ArrayList<>();
+        try {
+            List<String> tempPaths = new ArrayList<>();
+            for (MultipartFile file : files) {
+                if (file.isEmpty()) {
+                    continue;
+                }
+                if (file.getSize() > maxUploadFileSizeBytes) {
+                    throw new IllegalArgumentException("File too large: " + file.getOriginalFilename());
+                }
+                Path tempFile = Files.createTempFile("flexsim-", ".csv");
+                file.transferTo(tempFile);
+                tempFiles.add(tempFile);
+                tempPaths.add(tempFile.toString());
+            }
+
+            if (tempPaths.isEmpty()) {
+                throw new IllegalArgumentException("No files uploaded");
+            }
+
+            System.out.println("DEBUG: Loading files: " + tempPaths);
+            Map<String, Map<String, Double>> result = experimenterDataService.loadAndMergeAllNumeric(
+                    tempPaths, List.of(keyColumn));
+            System.out.println("DEBUG: Result size: " + result.size());
+            System.out.println("DEBUG: Sample keys: " + (result.isEmpty() ? "empty" : result.keySet().stream().limit(3).toList()));
+            System.out.println("DEBUG: Sample columns: " + (result.isEmpty() ? "empty" : result.values().stream().findFirst().get().keySet().stream().limit(5).toList()));
+
+            experimenterDataService.exportToCsv(result, outputFile);
+            System.out.println("DEBUG: Export completed to " + outputFile);
+
+            return result;
+
+        } finally {
+            for (Path tempFile : tempFiles) {
+                try {
+                    Files.deleteIfExists(tempFile);
+                } catch (IOException ignored) {}
+            }
+        }
+    }
+
+    @PostMapping("/headers/upload")
+    public String[] headersUpload(
+            @RequestParam("file") MultipartFile file
+    ) throws IOException, CsvException {
+
+        Path tempFile = Files.createTempFile("flexsim-headers-", ".csv");
+        try {
+            file.transferTo(tempFile);
+            return csvReaderService.getHeaders(tempFile.toString());
+        } finally {
+            Files.deleteIfExists(tempFile);
         }
     }
 }
