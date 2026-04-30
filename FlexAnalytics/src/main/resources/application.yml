@@ -3,27 +3,20 @@ spring:
     name: flex-analytics
   security:
     user:
-      name: ${ADMIN_USER}
-      password: ${ADMIN_PASSWORD}
-  servlet:
-    multipart:
-      max-file-size: ${MULTIPART_MAX_FILE_SIZE:10MB}
-      max-request-size: ${MULTIPART_MAX_REQUEST_SIZE:300MB}
+      name: ${ADMIN_USER:admin}
+      password: ${ADMIN_PASSWORD:123456}
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 app:
   cli:
     enabled: ${CLI_ENABLED:false}
-  input-file: ${INPUT_FILE}
-  output-file: ${OUTPUT_FILE}
-  correlation-method: ${CORRELATION_METHOD:PEARSON}
-  upload:
-    max-file-size-bytes: ${UPLOAD_MAX_FILE_SIZE_BYTES:10485760}
-  max-file-size: 10MB
+  input-file: ${INPUT_FILE:classpath:analytics.csv}
+  output-file: ${OUTPUT_FILE:output/analytics_output.csv}
+  correlation-method: PEARSON
 
 logging:
   level:
     root: INFO
   file:
-    name: ${LOG_FILE}
+    name: ${LOG_FILE:logs/app.log}

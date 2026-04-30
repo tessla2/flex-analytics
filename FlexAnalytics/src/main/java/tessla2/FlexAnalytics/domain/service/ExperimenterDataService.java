@@ -18,7 +18,8 @@ public class ExperimenterDataService {
 
     public Map<String, Map<String, Double>> loadAndMergeAllNumeric(List<String> filePaths,
                                                        List<String> keyColumns) throws IOException, CsvException {
-        Map<String, Map<String, Double>> mergedData = new LinkedHashMap<>();
+        Map<String, Map<String, Double>> rawValues = new LinkedHashMap<>();
+        Map<String, Map<String, Integer>> rawCounts = new LinkedHashMap<>();
 
         for (String filePath : filePaths) {
             List<String[]> rawData = csvReaderService.loadRaw(filePath);
@@ -36,7 +37,12 @@ public class ExperimenterDataService {
             Set<String> numericColumns = new LinkedHashSet<>();
             for (int col = 0; col < headers.length; col++) {
                 if (!keyIndices.contains(col)) {
-                    numericColumns.add(headers[col].trim());
+                    String colName = headers[col].trim();
+                    if (!colName.equalsIgnoreCase("RepNum") &&
+                        !colName.equalsIgnoreCase("Object") &&
+                        !colName.equalsIgnoreCase("State")) {
+                        numericColumns.add(colName);
+                    }
                 }
             }
 
@@ -44,19 +50,32 @@ public class ExperimenterDataService {
                 String[] row = rawData.get(i);
                 String key = buildKey(row, keyIndices);
 
-                if (!mergedData.containsKey(key)) {
-                    mergedData.put(key, new LinkedHashMap<>());
-                }
-                Map<String, Double> record = mergedData.get(key);
+                rawValues.computeIfAbsent(key, k -> new LinkedHashMap<>());
+                rawCounts.computeIfAbsent(key, k -> new LinkedHashMap<>());
+
+                Map<String, Double> values = rawValues.get(key);
+                Map<String, Integer> counts = rawCounts.get(key);
 
                 for (String colName : numericColumns) {
                     int colIdx = findColumnIndex(headers, colName);
                     if (colIdx >= 0 && colIdx < row.length) {
                         double value = parseDouble(row[colIdx]);
-                        record.merge(colName, value, (a, b) -> a + b);
+                        values.merge(colName, value, (a, b) -> a + b);
+                        counts.merge(colName, 1, Integer::sum);
                     }
                 }
             }
+        }
+
+        Map<String, Map<String, Double>> mergedData = new LinkedHashMap<>();
+        for (String key : rawValues.keySet()) {
+            Map<String, Double> averaged = new LinkedHashMap<>();
+            Map<String, Double> values = rawValues.get(key);
+            Map<String, Integer> counts = rawCounts.get(key);
+            for (String colName : values.keySet()) {
+                averaged.put(colName, values.get(colName) / counts.get(colName));
+            }
+            mergedData.put(key, averaged);
         }
 
         return mergedData;
@@ -151,6 +170,7 @@ public class ExperimenterDataService {
             }
             for (int i = 0; i < outputColumns.size(); i++) {
                 row[inputColumns.size() + i] = data.getOrDefault(outputColumns.get(i), 0.0);
+                outputs[rowIndex] = row[inputColumns.size() + i];
             }
 
             inputs.add(row);

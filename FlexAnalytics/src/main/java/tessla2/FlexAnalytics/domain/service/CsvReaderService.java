@@ -279,6 +279,7 @@ public class CsvReaderService {
             }
         }
 
+
         if (fieldBuilder.length() > 0 || !currentRow.isEmpty()) {
             currentRow.add(fieldBuilder.toString().trim());
             rows.add(currentRow.toArray(new String[0]));

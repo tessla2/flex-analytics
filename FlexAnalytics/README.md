@@ -1,8 +1,9 @@
 # Flex Analytics API
 
-Spring Boot REST API for sensitivity analysis of FlexSim factory floor simulation data, supporting Pearson correlation and ANOVA.
+Spring Boot REST API for sensitivity analysis of FlexSim factory floor simulation data, supporting Pearson and Spearman correlation.
 
 ## Requirements
+
 - Java 21+
 - Maven 3.8+
 
@@ -12,6 +13,9 @@ Spring Boot REST API for sensitivity analysis of FlexSim factory floor simulatio
 cd FlexAnalytics
 ./mvnw.cmd spring-boot:run
 ```
+
+The API will be available at `http://localhost:8081`
+
 ## Configuration (Optional)
 
 Create a `.env` file at the project root to customize:
@@ -29,142 +33,78 @@ LOG_FILE=logs/app.log
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `POST` | `/api/v1/sensitivity/analyze` | Upload CSV and run analysis |
-| `GET` | `/api/v1/sensitivity/export` | Download enriched CSV with results |
+| `POST` | `/api/v1/sensitivity/merge-flexsim/upload` | Merge FlexSim experimenter files |
+| `POST` | `/api/v1/sensitivity/headers/upload` | Get CSV headers |
 | `GET` | `/actuator/health` | Health check |
 
-## Testing with Postman
+## FlexSim Experimenter Workflow
 
-1. **Method:** `POST`
-2. **URL:** `http://localhost:8081/api/v1/sensitivity/analyze`
-3. **Auth:** Basic Auth → `admin` / `123456`
-4. **Body:** `form-data`
-   - Key: `file` (type: File) → select your `.csv` file
-5. **Send!**
+### 1. Discover CSV Headers
 
-## Supported CSV Types
-
-The API automatically detects the CSV type and applies the appropriate analysis.
-
-### 1. Aggregated Production Data
-Standard numeric columns. Last column is the output variable.
-
-```
-operadores,tempo_maquina,buffer,throughput
-3,12.5,100,520
-4,10.2,150,610
+```bash
+POST /api/v1/sensitivity/headers/upload
 ```
 
-### 2. FlexSim Experimenter Export (Multi-Scenario)
-Exported from the FlexSim Experimenter module. `ScenarioID` and `RepNum` are automatically detected as metadata and excluded from analysis.
+**Body:** `form-data`
+- Key: `file` (type: File)
 
-```
-ScenarioID;RepNum;factor1;factor2;response
-1;1;10;100;520
-1;2;10;100;515
-2;1;15;150;610
+**Response:**
+```json
+["ScenarioID", "RepNum", "Object", "State", "Time", "Utilization"]
 ```
 
-### 3. Time Series
-Date column followed by a metric. Automatically aggregated by hour of day.
+### 2. Merge FlexSim Files
 
-```
-Time;Quantidade
-12/06/2025 00:00:05;1,000000
-12/06/2025 01:38:47;1,000000
+```bash
+POST /api/v1/sensitivity/merge-flexsim/upload
 ```
 
-### 4. Object State (FlexSim)
-State column with text values (e.g. `Travel loaded`, `Idle`). Automatically label-encoded and analyzed with ANOVA.
+**Body:** `form-data`
+- Key: `files` (type: File) - select multiple CSV files
+- Key: `keyColumn` (type: Text) - default: `ScenarioID`
+- Key: `outputFile` (type: Text) - default: `./output/merged_result.csv`
 
-```
-ScenarioID;RepNum;Object;State;Time;Utilization
-1;1;AGILOX;Travel loaded;825,56;0,987500
-1;1;AGILOX;Idle;0,000000;0,987500
-```
-
-### 5. Sensor / Battery Data
-Numeric metric recorded over time with a date column.
-
-```
-ScenarioID;RepNum;AMR;Nivel da bateria;Tempo
-1;1;0;99,93;26/01/2026 00:00:24
-```
-
----
-
-## Auto-Detection Rules
-
-| Rule | Behavior |
-|------|----------|
-| `ScenarioID`, `RepNum` columns | Always ignored (FlexSim metadata) |
-| Constant columns (zero/near-zero variance) | Ignored automatically |
-| Text columns with variation | Label-encoded → analyzed with ANOVA |
-| Text columns that are constant | Ignored |
-| Date/time columns | Converted to epoch seconds (UTC) |
-| Separator | Auto-detected: `;` `,` `\t` `\|` |
-| Decimal | Auto-normalized: `,` → `.` |
-| Output variable | Last active column with variance |
-| Time series | Date as first active column → aggregated by hour |
-
----
-
-## Analysis Methods
-
-The API automatically selects the analysis method per variable:
-
-| Variable Type | Method | Effect Size |
-|-------------|--------|------------|
-| Numeric | Pearson correlation | r ∈ [-1, 1] |
-| Categorical (text) | ANOVA (one-way) | eta-squared ∈ [0, 1] |
-
----
-
-## Request — POST /api/v1/sensitivity/analyze
-
-**Content-Type:** `multipart/form-data`
-**Parameter:** `file` — `.csv` file
-
-### Response
-
+**Response:**
 ```json
 {
-  "fileName": "Estado_do_Agilox.csv",
-  "totalRows": 1200,
-  "totalVariables": 2,
-  "outputVariable": "Time",
-  "results": [
-    {
-      "variable": "State",
-      "correlation": 0.9919,
-      "absoluteImpact": 0.9919,
-      "analysisType": "ANOVA"
-    },
-    {
-      "variable": "ScenarioID",
-      "correlation": -0.1155,
-      "absoluteImpact": 0.1155,
-      "analysisType": "Pearson"
-    }
-  ]
+  "1": {
+    "Utilization": 0.333571,
+    "Time": 125.172414
+  },
+  "2": {
+    "Utilization": 0.450000,
+    "Time": 150.000000
+  }
 }
 ```
 
-### Response Fields
+The output file is saved to `FlexAnalytics/output/merged_result.csv`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `fileName` | string | Original file name |
-| `totalRows` | int | Number of data rows after processing |
-| `totalVariables` | int | Number of input variables analyzed |
-| `outputVariable` | string | Name of the output (target) variable |
-| `results[].variable` | string | Input variable name |
-| `results[].correlation` | double | Pearson r or ANOVA eta-squared |
-| `results[].absoluteImpact` | double | Absolute value of correlation / eta-squared |
-| `results[].analysisType` | string | `"Pearson"` or `"ANOVA"` |
+### 3. Run Sensitivity Analysis
 
-Results are ordered by `absoluteImpact` descending.
+After merging, use the summary file with input/output columns for correlation analysis.
 
----
+## Supported CSV Formats
+
+The API automatically detects:
+- **Delimiter:** `;` or `,`
+- **Decimal:** `,` (comma) or `.` (dot)
+
+Example FlexSim Experimenter export:
+```
+ScenarioID;RepNum;Object;State;Time;Utilization
+1;000000;Operador A1;Processing;0,000000;0,333571
+1;000000;Operador A1;Busy;0,000000;0,333571
+```
+
+## CSV Format Detection Rules
+
+| Rule | Behavior |
+|------|----------|
+| `ScenarioID`, `RepNum` columns | Used as keys for merging |
+| Separator | Auto-detected: `;` or `,` |
+| Decimal | Auto-normalized: `,` → `.` |
+| Numeric columns | Merged by key column |
 
 ## Authentication
 
@@ -174,15 +114,22 @@ Basic Auth is required on all endpoints except `/actuator/health`.
 Authorization: Basic <base64(admin:123456)>
 ```
 
----
+## Testing with Postman
+
+1. **Method:** `POST`
+2. **URL:** `http://localhost:8081/api/v1/sensitivity/merge-flexsim/upload`
+3. **Auth:** Basic Auth → `admin` / `123456`
+4. **Body:** `form-data`
+   - Key: `files` (type: File) → select your `.csv` files
+   - Key: `keyColumn` (type: Text) → `ScenarioID`
+5. **Send!**
 
 ## Error Codes
 
 | Status | Description |
 |--------|-------------|
-| 400 | Invalid or malformed request (empty file, wrong format, parse error) |
+| 400 | Invalid or malformed request |
 | 401 | Missing or invalid credentials |
-| 404 | Resource not found (e.g. export called before analyze) |
 | 500 | Internal server error |
 
 ### Error Response Body
@@ -190,7 +137,40 @@ Authorization: Basic <base64(admin:123456)>
 ```json
 {
   "status": 400,
-  "message": "Only .csv files are allowed.",
-  "timestamp": "2026-03-05T12:00:00"
+  "message": "Error description",
+  "timestamp": "2026-04-28T12:00:00"
 }
 ```
+
+## Project Structure
+
+```
+FlexAnalytics/src/main/java/tessla2/FlexAnalytics/
+├── controller/
+│   └── SensitivityController.java
+├── domain/
+│   ├── model/
+│   │   ├── DataSet.java
+│   │   ├── SensitivityResult.java
+│   │   └── CorrelationMethod.java
+│   └── service/
+│       ├── CsvReaderService.java
+│       ├── CsvExportService.java
+│       ├── SensitivityService.java
+│       ├── ExperimenterDataService.java
+│       └── ExperimenterMergeService.java
+├── application/
+│   ├── dto/
+│   └── mapper/
+├── exception/
+└── runner/
+    └── ConsoleRunner.java
+```
+
+## Future Enhancements
+
+- ANOVA for categorical variables
+- Time series aggregation
+- Dashboard with charts
+- Export to Excel
+- Multiple output columns
